@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luminary — Discover the World's Wonders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!-- Google AdSense Script (replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID) -->
+<script type="module" src="/src/main.jsx"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3123300227513455"
+     crossorigin="anonymous"></script>
+<style>
+  :root {
+    --ink: #0e0c0a;
+    --cream: #f5f0e8;
+    --amber: #d4820a;
+    --amber-light: #f0a830;
+    --rust: #8b3a1c;
+    --sage: #4a6741;
+    --paper: #ede8dc;
+    --shadow: rgba(14,12,10,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ─── LOADER / INTRO ─── */
+  #loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .loader-word {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 900;
+    color: var(--cream);
+    overflow: hidden;
+    line-height: 1;
+  }
+
+  .loader-word span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .loader-word .char { animation-delay: calc(var(--i) * 0.06s); }
+
+  .loader-line {
+    width: 0;
+    height: 2px;
+    background: var(--amber);
+    animation: expandLine 1s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes slideUp {
+    to { transform: translateY(0); }
+  }
+  @keyframes expandLine {
+    to { width: 200px; }
+  }
+
+  #loader.fade-out {
+    animation: loaderOut 0.9s 2.4s cubic-bezier(0.7, 0, 1, 1) forwards;
+  }
+
+  @keyframes loaderOut {
+    0% { clip-path: inset(0 0 0 0); }
+    100% { clip-path: inset(0 0 100% 0); pointer-events: none; }
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(14,12,10,0.1);
+    padding: 1.2rem 4vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    opacity: 0;
+    animation: fadeIn 0.6s 3.1s ease forwards;
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--amber); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--amber);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover::after { width: 100%; }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6vw 5vw 6vw 8vw;
+    opacity: 0;
+    animation: heroIn 1s 3.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--amber);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(14,12,10,0.65);
+    max-width: 420px;
+    margin-bottom: 2.5rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--ink);
+    color: var(--cream);
+    padding: 1rem 2rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: fit-content;
+  }
+
+  .btn-primary:hover {
+    background: var(--amber);
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    transition: transform 0.3s ease;
+  }
+  .btn-primary:hover .btn-arrow { transform: translateX(5px); }
+
+  .hero-image {
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: heroImgIn 1.2s 3.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes heroImgIn {
+    from { opacity: 0; transform: scale(1.08); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,130,10,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-image-counter {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    background: var(--cream);
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hero-image-counter strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--amber);
+    line-height: 1;
+  }
+
+  .hero-image-counter span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(14,12,10,0.5);
+  }
+
+  /* ─── AD BANNER (top leaderboard) ─── */
+  .ad-leaderboard {
+    background: var(--paper);
+    border-top: 1px solid rgba(14,12,10,0.08);
+    border-bottom: 1px solid rgba(14,12,10,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    min-height: 100px;
+    opacity: 0;
+    animation: fadeIn 0.6s 3.5s ease forwards;
+  }
+
+  .ad-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(14,12,10,0.3);
+    text-align: center;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* ─── CATEGORIES ─── */
+  .section {
+    padding: 6rem 8vw;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .see-all {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--amber);
+    padding-bottom: 2px;
+    white-space: nowrap;
+  }
+
+  /* ─── ARTICLE GRID ─── */
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .article-card:hover { transform: translateY(-4px); }
+
+  .article-card .thumb {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .article-card .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .article-card:hover .thumb img { transform: scale(1.06); }
+
+  .article-card .thumb-cat {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--amber);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .article-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+  }
+
+  .article-card p {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: rgba(14,12,10,0.6);
+    margin-bottom: 1rem;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: rgba(14,12,10,0.45);
+    margin-top: auto;
+  }
+
+  .article-meta .dot {
+    width: 3px;
+    height: 3px;
+    background: rgba(14,12,10,0.3);
+    border-radius: 50%;
+  }
+
+  /* ─── AD RECTANGLE (sidebar / in-feed) ─── */
+  .ad-inline {
+    background: var(--paper);
+    border: 1px solid rgba(14,12,10,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 280px;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* ─── FEATURED / SPLIT SECTION ─── */
+  .featured {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 5rem 8vw;
+    background: var(--ink);
+    color: var(--cream);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .featured.visible { opacity: 1; transform: translateY(0); }
+
+  .featured-image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .featured-image img {
+    width: 100%;
+    aspect-ratio: 5/4;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 3px solid var(--amber);
+    transform: translate(12px, 12px);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .featured-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .featured-tag::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--amber);
+  }
+
+  .featured h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+
+  .featured p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: rgba(245,240,232,0.65);
+    margin-bottom: 2rem;
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1.5px solid var(--amber);
+    color: var(--cream);
+    padding: 0.9rem 2rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    background: transparent;
+    width: fit-content;
+  }
+
+  .btn-outline:hover {
+    background: var(--amber);
+    color: white;
+  }
+
+  /* ─── TOPICS ROW ─── */
+  .topics {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding: 4rem 8vw;
+    border-bottom: 1px solid rgba(14,12,10,0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .topics.visible { opacity: 1; transform: translateY(0); }
+
+  .topic-chip {
+    padding: 0.6rem 1.5rem;
+    border: 1.5px solid rgba(14,12,10,0.2);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .topic-chip:hover,
+  .topic-chip.active {
+    background: var(--ink);
+    color: var(--cream);
+    border-color: var(--ink);
+  }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    padding: 6rem 8vw;
+    text-align: center;
+    background: var(--paper);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .newsletter.visible { opacity: 1; transform: translateY(0); }
+
+  .newsletter h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .newsletter p {
+    color: rgba(14,12,10,0.6);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    margin-inline: auto;
+  }
+
+  .email-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    border: 1.5px solid var(--ink);
+  }
+
+  .email-form input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    border: none;
+    background: white;
+    outline: none;
+    color: var(--ink);
+  }
+
+  .email-form button {
+    padding: 1rem 1.8rem;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .email-form button:hover { background: var(--amber); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 4rem 8vw 2rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  .footer-brand h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+
+  .footer-brand h3 span { color: var(--amber); }
+
+  .footer-brand p {
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.5);
+    max-width: 260px;
+  }
+
+  .footer-col h4 {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-col a {
+    font-size: 0.875rem;
+    color: rgba(245,240,232,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--amber); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(245,240,232,0.1);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.3);
+  }
+
+  /* ─── AD BOTTOM BANNER ─── */
+  .ad-footer-banner {
+    background: rgba(245,240,232,0.05);
+    border-top: 1px solid rgba(245,240,232,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  /* ─── FLOATING PARTICLES ─── */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--amber);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFly var(--dur) var(--delay) ease-in-out infinite;
+  }
+
+  @keyframes particleFly {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) translateX(var(--drift)); opacity: 0; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-text { padding: 5rem 6vw 3rem; }
+    .hero-image { display: none; }
+    .article-grid { grid-template-columns: 1fr 1fr; }
+    .featured { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    nav { padding: 1rem 5vw; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .article-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── SCROLL INDICATOR ─── */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--amber);
+    z-index: 9999;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* ─── CURSOR ─── */
+  .cursor {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: var(--amber);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    mix-blend-mode: multiply;
+  }
+
+  .cursor.big {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- Scroll Progress -->
+<div class="scroll-progress" id="progress"></div>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="loader-word">
+    <span class="char" style="--i:0">L</span><span class="char" style="--i:1">U</span><span class="char" style="--i:2">M</span><span class="char" style="--i:3">I</span><span class="char" style="--i:4">N</span><span class="char" style="--i:5">A</span><span class="char" style="--i:6">R</span><span class="char" style="--i:7">Y</span>
+  </div>
+  <div class="loader-line"></div>
+</div>
+
+<!-- Floating Particles (during load) -->
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Lumin<span>a</span>ry</a>
+  <ul class="nav-links">
+    <li><a href="#">Explore</a></li>
+    <li><a href="#">Travel</a></li>
+    <li><a href="#">Culture</a></li>
+    <li><a href="#">Science</a></li>
+    <li><a href="#">Food</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-tag">Your Guide to the World</p>
+    <h1>Discover<br><em>Wonders</em><br>Untold</h1>
+    <p class="hero-desc">Stories from every corner of the globe — culture, adventure, nature, and the extraordinary hidden in the everyday.</p>
+    <a class="btn-primary" href="#">
+      Start Exploring <span class="btn-arrow">→</span>
+    </a>
+  </div>
+  <div class="hero-image">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&auto=format&fit=crop" alt="Mountain wonder">
+    <div class="hero-image-overlay"></div>
+    <div class="hero-image-counter">
+      <strong>2,400+</strong>
+      <span>Stories Published</span>
+    </div>
+  </div>
+</section>
+
+<!-- AD: LEADERBOARD 728x90 -->
+<div class="ad-leaderboard">
+  <span class="ad-label">Advertisement</span>
+  <!-- Replace with your AdSense ad unit code -->
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-3123300227513455"
+       data-ad-slot="1234567890"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- TOPICS ROW -->
+<div class="topics" id="topics">
+  <button class="topic-chip active">All</button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://explornature.in/">Travel</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.indianculture.gov.in/">Culture</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.history.com/">History</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.exoticindiaart.com/">Science</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.nationalgeographic.com/">Nature</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.foodandwine.com/">Food & Drink</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.techcrunch.com/">Technology</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.artsy.net/">Art</a></button>
+  <button class="topic-chip" style="color: #0e0c0a;"><a href="https://www.lifestyle.com/">Lifestyle</a></button>
+</div>
+
+<!-- ARTICLES SECTION -->
+<section class="section" id="articles">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Latest Stories</p>
+      <h2 class="section-title">Hand-picked<br>for You</h2>
+    </div>
+    <a class="see-all" href="#">See All →</a>
+  </div>
+
+  <div class="article-grid">
+
+    <!-- Article 1 -->
+    <div class="article-card">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&auto=format&fit=crop" alt="Travel">
+        <span class="thumb-cat">Travel</span>
+      </div>
+      <h3>The Hidden Villages of the Swiss Alps You've Never Heard Of</h3>
+      <p>Tucked between glaciers and meadows, these forgotten hamlets have barely changed in three centuries.</p>
+      <div class="article-meta">
+        <span>May 14</span>
+        <span class="dot"></span>
+        <span>8 min read</span>
+      </div>
+    </div>
+
+    <!-- AD: In-feed rectangle -->
+    <div class="ad-inline">
+      <span class="ad-label">Sponsored</span>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-3123300227513455"
+           data-ad-slot="0987654321"
+           data-ad-format="rectangle"
+           data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <!-- Article 2 -->
+    <div class="article-card">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&auto=format&fit=crop" alt="Culture">
+        <span class="thumb-cat">Culture</span>
+      </div>
+      <h3>Ancient Fire Festivals Still Burning Bright in Rural Japan</h3>
+      <p>From Nozawa Onsen to Aso, these sacred rituals draw thousands yet remain unchanged by tourism.</p>
+      <div class="article-meta">
+        <span>May 10</span>
+        <span class="dot"></span>
+        <span>6 min read</span>
+      </div>
+    </div>
+
+    <!-- Article 3 -->
+    <div class="article-card">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&auto=format&fit=crop" alt="Nature">
+        <span class="thumb-cat">Nature</span>
+      </div>
+      <h3>Why Scientists Are Obsessed With This Glowing Patagonian Lake</h3>
+      <p>A rare bioluminescence phenomenon has turned a remote Chilean basin into a scientific goldmine.</p>
+      <div class="article-meta">
+        <span>May 8</span>
+        <span class="dot"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+
+    <!-- Article 4 -->
+    <div class="article-card">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&auto=format&fit=crop" alt="Food">
+        <span class="thumb-cat">Food</span>
+      </div>
+      <h3>The World's Most Endangered Recipe: Hunting for Forgotten Flavors</h3>
+      <p>A culinary archaeologist's quest to revive dishes on the verge of extinction.</p>
+      <div class="article-meta">
+        <span>May 4</span>
+        <span class="dot"></span>
+        <span>7 min read</span>
+      </div>
+    </div>
+
+    <!-- Article 5 -->
+    <div class="article-card">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=600&auto=format&fit=crop" alt="History">
+        <span class="thumb-cat">History</span>
+      </div>
+      <h3>Lost for 400 Years: The Rediscovered Libraries of the Sahara</h3>
+      <p>Beneath the sands of Mali, librarians smuggled thousands of manuscripts from invaders.</p>
+      <div class="article-meta">
+        <span>Apr 28</span>
+        <span class="dot"></span>
+        <span>12 min read</span>
+      </div>
+    </div>
+
+    <!-- Article 6 -->
+    <div class="article-card">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1485841938031-1bf81239b815?w=600&auto=format&fit=crop" alt="Science">
+        <span class="thumb-cat">Science</span>
+      </div>
+      <h3>The Island Where Time Stopped — and Evolution Ran Wild</h3>
+      <p>Isolated for 12 million years, this tiny archipelago birthed creatures found nowhere else on Earth.</p>
+      <div class="article-meta">
+        <span>Apr 22</span>
+        <span class="dot"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURED / DARK SECTION -->
+<div class="featured" id="featured">
+  <div class="featured-image">
+    <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&auto=format&fit=crop" alt="Featured">
+  </div>
+  <div class="featured-content">
+    <p class="featured-tag">Editor's Pick</p>
+    <h2>The Last Land the Maps Got Wrong</h2>
+    <p>For over a century, cartographers debated its very existence. Today, a team of explorers finally plants their flag on an island the world forgot.</p>
+    <a class="btn-outline" href="#">Read the Story →</a>
+  </div>
+</div>
+
+<!-- NEWSLETTER + AD -->
+<section class="newsletter" id="newsletter">
+  <p class="section-label">Join 80,000 Readers</p>
+  <h2>Stories Delivered<br>Every Week</h2>
+  <p>No noise. No spam. Just the world's best long-form stories, curated by our editors every Thursday.</p>
+  <div class="email-form">
+    <input type="email" placeholder="your@email.com">
+    <button type="button">Subscribe</button>
+  </div>
+</section>
+
+<!-- AD: Bottom Leaderboard -->
+<div class="ad-leaderboard">
+  <span class="ad-label">Advertisement</span>
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+       data-ad-slot="1122334455"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Lumin<span>a</span>ry</h3>
+      <p>Independent storytelling for curious minds. We explore the world's wonders so you can discover yours.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#">Travel</a></li>
+        <li><a href="#">Culture</a></li>
+        <li><a href="#">Science</a></li>
+        <li><a href="#">History</a></li>
+        <li><a href="#">Nature</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Contribute</a></li>
+        <li><a href="#">Advertise</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Follow</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Twitter / X</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Luminary. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Use · Cookie Settings</span>
+  </div>
+</footer>
+
+<script>
+  // ─── LOADER ───
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('fade-out');
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('particles').style.display = 'none';
+      }, 3300);
+    }, 2200);
+  });
+
+  // ─── PARTICLES ───
+  const particleContainer = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      --dur: ${2.5 + Math.random() * 3}s;
+      --delay: ${Math.random() * 2}s;
+      --drift: ${(Math.random() - 0.5) * 200}px;
+      width: ${2 + Math.random() * 4}px;
+      height: ${2 + Math.random() * 4}px;
+      opacity: 0;
+    `;
+    particleContainer.appendChild(p);
+  }
+
+  // ─── SCROLL PROGRESS ───
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    document.getElementById('progress').style.width = (scrolled * 100) + '%';
+  });
+
+  // ─── SCROLL REVEAL ───
+  const revealEls = document.querySelectorAll('.section, .featured, .newsletter, .topics');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // ─── TOPIC CHIPS ───
+  document.querySelectorAll('.topic-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // ─── CUSTOM CURSOR ───
+  const cursor = document.getElementById('cursor');
+  let mx = 0, my = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  document.querySelectorAll('a, button, .article-card, .topic-chip').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+  });
+
+  // ─── EMAIL FORM ───
+  document.querySelector('.email-form button').addEventListener('click', function() {
+    const input = document.querySelector('.email-form input');
+    if (input.value && input.value.includes('@')) {
+      this.textContent = '✓ Subscribed!';
+      this.style.background = '#4a6741';
+      input.value = '';
+    }
+  });
+</script>
+</body>
+</html>
